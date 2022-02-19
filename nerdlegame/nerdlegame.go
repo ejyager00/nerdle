@@ -119,7 +119,10 @@ func WeightedRandomPuzzle(length int, leadingzeros, negativezeros bool, zeroremo
 	return puzzle
 }
 
-func MakeGuess(guess, puzzle string) []int {
+func MakeGuess(guess, puzzle string, leadingzeros, negativezeros bool) []int {
+	if !IsValidPuzzle(guess, leadingzeros, negativezeros) {
+		return nil
+	}
 	answer := make([]int, len(guess))
 	for i, c := range guess {
 		if c == rune(puzzle[i]) {
