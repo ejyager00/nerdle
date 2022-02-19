@@ -14,7 +14,7 @@ const ZERO_REMOVAL_RATE float32 = 1
 
 func main() {
 	for i := 0; i < 20; i++ {
-		p := nerdlegame.WeightedRandomPuzzle(8)
+		p := nerdlegame.WeightedRandomPuzzle(PUZZLE_LENGTH, LEADING_ZEROS_ALLOWED, NEGATIVE_ZERO_ALLOWED, ZERO_REMOVAL_RATE)
 		fmt.Println(p)
 	}
 }

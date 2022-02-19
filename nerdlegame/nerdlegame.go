@@ -118,3 +118,22 @@ func WeightedRandomPuzzle(length int, leadingzeros, negativezeros bool, zeroremo
 	}
 	return puzzle
 }
+
+func MakeGuess(guess, puzzle string) []int {
+	answer := make([]int, len(guess))
+	for i, c := range guess {
+		if c == rune(puzzle[i]) {
+			answer[i] = 1
+		} else if strings.ContainsRune(puzzle, c) {
+			puzzle_c := strings.Count(puzzle, string(c))
+			if puzzle_c >= strings.Count(guess, string(c)) || puzzle_c > strings.Count(guess[:i], string(c)) {
+				answer[i] = -1
+			} else {
+				answer[i] = 0
+			}
+		} else {
+			answer[i] = 0
+		}
+	}
+	return answer
+}
