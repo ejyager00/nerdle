@@ -26,7 +26,7 @@ func IsValidPuzzle(puzzle string, leadingzeros, negativezeros bool) bool {
 			if c == '-' {
 				if i == 1 && strings.ContainsRune("+-*/=", rune(puzzle[0])) {
 					return false // '-' cannot follow another symbol at the beginning
-				} else if i > 1 && strings.ContainsRune("+-*/=", rune(puzzle[i-2])) {
+				} else if i > 1 && strings.ContainsRune("+-*/=", rune(puzzle[i-2])) && strings.ContainsRune("+-*/=", rune(puzzle[i-1])) {
 					return false // '-' cannot end a three symbol sequence
 				} else if i == len(puzzle)-1 {
 					return false // cannot end with '-'
@@ -87,6 +87,7 @@ func IsValidPuzzle(puzzle string, leadingzeros, negativezeros bool) bool {
 }
 
 func RandomPuzzle(length int, leadingzeros, negativezeros bool) string {
+	// create strings of random characters until one is a valid puzzle
 	var puzzle string = ""
 	for !IsValidPuzzle(puzzle, leadingzeros, negativezeros) {
 		puzzle = ""
@@ -98,6 +99,7 @@ func RandomPuzzle(length int, leadingzeros, negativezeros bool) string {
 }
 
 func WeightedRandomPuzzle(length int, leadingzeros, negativezeros bool, zeroremovalrate float32) string {
+	// run the random puzzle function, and if a zero removal case occurs, attempt of fail and try another puzzle
 	var puzzle string = ""
 	new_puzzle := true
 	for new_puzzle {
@@ -126,12 +128,12 @@ func MakeGuess(guess, puzzle string, leadingzeros, negativezeros bool) []int {
 	answer := make([]int, len(guess))
 	for i, c := range guess {
 		if c == rune(puzzle[i]) {
-			answer[i] = 1
+			answer[i] = 1 // if the guess character equals the true value
 		} else if strings.ContainsRune(puzzle, c) {
 			puzzle_c := strings.Count(puzzle, string(c))
-			if puzzle_c >= strings.Count(guess, string(c)) {
-				answer[i] = -1
-			} else if puzzle_c > strings.Count(guess[:i], string(c)) {
+			if puzzle_c >= strings.Count(guess, string(c)) { // there are more of this character in the puzzle than the guess
+				answer[i] = -1 // the character is in the puzzle, but not position i
+			} else if puzzle_c > strings.Count(guess[:i], string(c)) { // there are more of this character in the puzzle than the guess up to this character
 				count_correct := 0
 				count_remaining := strings.Count(puzzle[i:], string(c))
 				for j, d := range guess[i:] {
@@ -139,16 +141,16 @@ func MakeGuess(guess, puzzle string, leadingzeros, negativezeros bool) []int {
 						count_correct++
 					}
 				}
-				if count_correct == count_remaining {
-					answer[i] = 0
+				if count_correct == count_remaining { // all the remaining instances are "claimed" by an exact match
+					answer[i] = 0 // there are not this many of this character in the puzzle
 				} else {
-					answer[i] = -1
+					answer[i] = -1 // the character is in the puzzle, but not position i
 				}
 			} else {
-				answer[i] = 0
+				answer[i] = 0 // there are not this many of this character in the puzzle
 			}
 		} else {
-			answer[i] = 0
+			answer[i] = 0 // the character is not in the puzzle
 		}
 	}
 	return answer

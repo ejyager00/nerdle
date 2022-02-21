@@ -7,6 +7,7 @@ import (
 )
 
 func precedence(x, y rune) int {
+	// * and / have greater precedence than + and -
 	if x == '+' || x == '-' {
 		if y == '+' || y == '-' {
 			return 0
@@ -24,6 +25,7 @@ func precedence(x, y rune) int {
 }
 
 func shuntingYard(expression string) string {
+	// convert infix to postfix
 	ops_stack := make([]rune, len(expression))
 	ops_last := -1
 	var output string = ""
@@ -33,20 +35,14 @@ func shuntingYard(expression string) string {
 			if c == '-' && (i == 0 || strings.ContainsRune("+-*/", rune(expression[i-1]))) {
 				prior++
 			} else {
-				if ops_last == -1 {
-					ops_last++
-					ops_stack[ops_last] = c
-				} else if precedence(c, ops_stack[ops_last]) <= 0 {
+				if ops_last != -1 && precedence(c, ops_stack[ops_last]) <= 0 {
 					for ops_last >= 0 && precedence(c, ops_stack[ops_last]) <= 0 {
 						output += string(ops_stack[ops_last])
 						ops_last--
 					}
-					ops_last = 0
-					ops_stack[0] = c
-				} else {
-					ops_last++
-					ops_stack[ops_last] = c
 				}
+				ops_last++
+				ops_stack[ops_last] = c
 			}
 		} else {
 			if i != len(expression)-1 && strings.ContainsRune("0123456789", rune(expression[i+1])) {
@@ -64,6 +60,7 @@ func shuntingYard(expression string) string {
 }
 
 func postfixCalc(expression string) float64 {
+	// evaluate postfix expression
 	stack := make([]float64, len(expression))
 	stack_loc := -1
 	last_open := 0
@@ -93,6 +90,7 @@ func postfixCalc(expression string) float64 {
 }
 
 func IsEqual(equation string) bool {
+	// returns the truth value of the equation
 	sides := strings.Split(equation, "=")
 	left := sides[0]
 	ans, _ := strconv.Atoi(sides[1])
