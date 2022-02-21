@@ -120,17 +120,30 @@ func WeightedRandomPuzzle(length int, leadingzeros, negativezeros bool, zeroremo
 }
 
 func MakeGuess(guess, puzzle string, leadingzeros, negativezeros bool) []int {
-	if !IsValidPuzzle(guess, leadingzeros, negativezeros) {
-		return nil
-	}
+	// if !IsValidPuzzle(guess, leadingzeros, negativezeros) || len(guess) != len(puzzle) {
+	// 	return nil
+	// }
 	answer := make([]int, len(guess))
 	for i, c := range guess {
 		if c == rune(puzzle[i]) {
 			answer[i] = 1
 		} else if strings.ContainsRune(puzzle, c) {
 			puzzle_c := strings.Count(puzzle, string(c))
-			if puzzle_c >= strings.Count(guess, string(c)) || puzzle_c > strings.Count(guess[:i], string(c)) {
+			if puzzle_c >= strings.Count(guess, string(c)) {
 				answer[i] = -1
+			} else if puzzle_c > strings.Count(guess[:i], string(c)) {
+				count_correct := 0
+				count_remaining := strings.Count(puzzle[i:], string(c))
+				for j, d := range guess[i:] {
+					if d == c && rune(puzzle[j]) == c {
+						count_correct++
+					}
+				}
+				if count_correct == count_remaining {
+					answer[i] = 0
+				} else {
+					answer[i] = -1
+				}
 			} else {
 				answer[i] = 0
 			}

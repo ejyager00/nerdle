@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Nerdle</title>
+        <style>
+            table, td {
+                border: 1px solid;
+            }
+            table {
+                margin-top: 30px;
+                margin-bottom: 20px;
+            }
+            td {
+                width: 40px;
+                height: 40px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Nerdle</h1>
+        <p>This is my attempt at recreating the Nerdle game as seen on <a href="https://nerdlegame.com/">nerdlegame.com/</a>.</p>
+        <div id="inputs">
+            <label for="puzzlelength">Puzzle length (characters):</label>
+            <input type="number" id="puzzlelength" name="puzzlelength" min="6" max="16" value="8" step="1"><br>
+            <label for="maxguesses">Maximum allowed guesses:</label>
+            <input type="number" id="maxguesses" name="maxguesses" min="1" max="100" value="6" step="1"><br>
+            <label for="leadingzeros">Leading zeros allowed for integers? (e.g. 07, -02):</label>
+            <input type="checkbox" id="leadingzeros" name="leadingzeros"><br>
+            <label for="negativezero">Negative zero allowed? (i.e. -0):</label>
+            <input type="checkbox" id="negativezero" name="negativezero"><br>
+            <label for="zeroremovalrate">Rate at which to remove multiplication by zero (can make things less interesting):</label>
+            <input type="number" id="zeroremovalrate" name="zeroremovalrate" min="0" max="1" value="0.75" step="0.001"><br>
+            <button type="button" id="formSubmit">Create New Game!</button>
+        </div>
+        <table>
+            <tbody id="gameGrid"></tbody>
+        </table>
+        <div id="guessInputs">
+            <label for="userguess">Guess the equation:</label>
+            <input id="userguess" name="userguess">
+            <button type="button" id="guessSubmit">Submit Guess!</button>
+        </div>
+        <p id="warning"></p>
+        <script>
+var url = "http://localhost:10000";
+var gameKey = -1;
+var guessNum = 0;
+var victory = false;
+var currentMaxGuesses = 6;
+window.onload = function() {
+    document.getElementById("formSubmit").addEventListener("click", gameFormSubmitted);
+    document.getElementById("guessSubmit").addEventListener("click", guessFormSubmitted)
+    gameFormSubmitted();
+};
+
+function gameFormSubmitted() {
+    currentMaxGuesses = document.getElementById("maxguesses").value;
+    let puzzlelength = document.getElementById("puzzlelength").value;
+    let leadingzeros = document.getElementById("leadingzeros").checked;
+    let negativezero = document.getElementById("negativezero").checked;
+    let zeroremovalrate = document.getElementById("zeroremovalrate").value
+    newGame(
+        puzzlelength,
+        currentMaxGuesses,
+        leadingzeros,
+        negativezero,
+        zeroremovalrate
+    ).then(data => {
+        var newTable = ""
+        for (let i = 0; i < currentMaxGuesses; i++) {
+            newTable += "<tr>";
+            for (let j = 0; j < puzzlelength; j++) {
+                newTable+='<td id="cell'+ i + j + '"></td>';
+            }
+            newTable += "</tr>";
+        }
+        document.getElementById("gameGrid").innerHTML = newTable;
+        gameKey = data['key'];
+        guessNum = 0;
+        victory = false;
+    });
+}
+
+function guessFormSubmitted() {
+    if (guessNum < currentMaxGuesses && !victory) {
+        let userGuess = document.getElementById("userguess").value;
+        makeGuess(gameKey, userGuess).then(data => {
+            if (data['validguess']) {
+                document.getElementById("warning").innerHTML = "";
+                for (let i=0; i < data['comparison'].length; i++) {
+                    document.getElementById("cell"+guessNum+i).innerHTML = userGuess.charAt(i);
+                    if (data['comparison'][i] == 1) {
+                        document.getElementById("cell"+guessNum+i).style.backgroundColor = "green";
+                    } else if (data['comparison'][i] == -1) {
+                        document.getElementById("cell"+guessNum+i).style.backgroundColor = "yellow";
+                    } else {
+                        document.getElementById("cell"+guessNum+i).style.backgroundColor = "red";
+                    }
+                }
+                guessNum++;
+                if (data['won']) {
+                    if (guessNum == 1) {
+                        document.getElementById("warning").innerHTML = "You won in one guess!";
+                    } else {
+                        document.getElementById("warning").innerHTML = "You won in " + guessNum + " guesses!";
+                    }
+                    victory = true;
+                } else if (data['lost'] || guessNum >= currentMaxGuesses) {
+                    document.getElementById("warning").innerHTML = "You lose! The solution was " + data['solution'] + ".";
+                }
+            } else {
+                document.getElementById("warning").innerHTML = "Your guess is invalid!";
+            }
+        })
+    }
+}
+
+async function newGame(puzzlelength, maxguesses, leadingzeros, negativezero, zeroremovalrate) {
+    // var data = JSON.stringify({
+    //     Length:puzzlelength,
+    //     LeadingZeros:leadingzeros,
+    //     NegativeZeros:negativezero,
+    //     ZeroRemovalRate:zeroremovalrate,
+    //     MaxGuesses:maxguesses
+    // });
+    // const response = await fetch(url+"/new", {
+    //     method : "POST",
+    //     mode : "cors",
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: data
+    // });
+    // return response.json();
+    return {
+        key : 0
+    };
+}
+async function makeGuess(key, guess) {
+    // var data = JSON.stringify({
+    //     Key:key,
+    //     Guess:guess
+    // });
+    // const response = await fetch(url+"/guess", {
+    //     method : "POST",
+    //     mode : "cors",
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: data
+    // });
+    // return response.json();
+    return {
+        validguess : true,
+        comparison : [1, 1, 0, 0, -1, 1, -1, 0],
+        won : true,
+        lost : false,
+        guesses : 1,
+        solution : "8+8+8=24"
+    }
+}
+        </script>
+    </body>
+</html>
