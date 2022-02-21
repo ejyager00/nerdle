@@ -67,6 +67,7 @@ function gameFormSubmitted() {
         negativezero,
         zeroremovalrate
     ).then(data => {
+        document.getElementById("warning").innerHTML = "";
         var newTable = ""
         for (let i = 0; i < currentMaxGuesses; i++) {
             newTable += "<tr>";
@@ -117,48 +118,35 @@ function guessFormSubmitted() {
 }
 
 async function newGame(puzzlelength, maxguesses, leadingzeros, negativezero, zeroremovalrate) {
-    // var data = JSON.stringify({
-    //     Length:puzzlelength,
-    //     LeadingZeros:leadingzeros,
-    //     NegativeZeros:negativezero,
-    //     ZeroRemovalRate:zeroremovalrate,
-    //     MaxGuesses:maxguesses
-    // });
-    // const response = await fetch(url+"/new", {
-    //     method : "POST",
-    //     mode : "cors",
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: data
-    // });
-    // return response.json();
-    return {
-        key : 0
-    };
+    var data = '{"Length":'+puzzlelength+
+    ',"LeadingZeros":'+leadingzeros+
+    ',"NegativeZeros":'+negativezero+
+    ',"ZeroRemovalRate":'+zeroremovalrate+
+    ',"MaxGuesses":'+maxguesses+'}'
+    const response = await fetch(url+"/new", {
+        method : "POST",
+        mode : "cors",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: data
+    });
+    return response.json();
 }
 async function makeGuess(key, guess) {
-    // var data = JSON.stringify({
-    //     Key:key,
-    //     Guess:guess
-    // });
-    // const response = await fetch(url+"/guess", {
-    //     method : "POST",
-    //     mode : "cors",
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: data
-    // });
-    // return response.json();
-    return {
-        validguess : true,
-        comparison : [1, 1, 0, 0, -1, 1, -1, 0],
-        won : true,
-        lost : false,
-        guesses : 1,
-        solution : "8+8+8=24"
-    }
+    var data = JSON.stringify({
+        Key:key,
+        Guess:guess
+    });
+    const response = await fetch(url+"/guess", {
+        method : "POST",
+        mode : "cors",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: data
+    });
+    return response.json();
 }
         </script>
     </body>
