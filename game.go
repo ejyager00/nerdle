@@ -1,10 +1,8 @@
-package nerdlegame
+package main
 
 import (
 	"math/rand"
 	"strings"
-
-	"github.com/ejyager00/nerdle/evaluate"
 )
 
 const LETTERS string = "0123456789+-*/="
@@ -80,7 +78,7 @@ func IsValidPuzzle(puzzle string, leadingzeros, negativezeros bool) bool {
 	if has_operator {
 		return false // there must not be an operator on the right side
 	}
-	if !evaluate.IsEqual(puzzle) {
+	if !IsEqual(puzzle) {
 		return false // the equation must be true
 	}
 	return true
