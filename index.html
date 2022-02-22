@@ -37,7 +37,7 @@
             <button type="button" id="formSubmit">Create New Game!</button>
         </div>
         <table>
-            <tbody id="gameGrid"></tbody>
+            <tbody id="gameGrid"><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody>
         </table>
         <div id="guessInputs">
             <label for="userguess">Guess the equation:</label>
@@ -46,7 +46,7 @@
         </div>
         <p id="warning"></p>
         <script>
-var url = "http://localhost:10000";
+var url = window.location.href;
 var gameKey = -1;
 var guessNum = 0;
 var victory = false;
@@ -126,7 +126,7 @@ async function newGame(puzzlelength, maxguesses, leadingzeros, negativezero, zer
     ',"NegativeZeros":'+negativezero+
     ',"ZeroRemovalRate":'+zeroremovalrate+
     ',"MaxGuesses":'+maxguesses+'}'
-    const response = await fetch(url+"/new", {
+    const response = await fetch(url+"new", {
         method : "POST",
         mode : "cors",
         headers: {
@@ -141,7 +141,7 @@ async function makeGuess(key, guess) {
         Key:key,
         Guess:guess
     });
-    const response = await fetch(url+"/guess", {
+    const response = await fetch(url+"guess", {
         method : "POST",
         mode : "cors",
         headers: {
