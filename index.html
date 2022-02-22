@@ -53,7 +53,12 @@ var victory = false;
 var currentMaxGuesses = 6;
 window.onload = function() {
     document.getElementById("formSubmit").addEventListener("click", gameFormSubmitted);
-    document.getElementById("guessSubmit").addEventListener("click", guessFormSubmitted)
+    document.getElementById("guessSubmit").addEventListener("click", guessFormSubmitted);
+    document.getElementById("userguess").addEventListener("keyup", function() {
+        if (event.keyCode == 13) {
+            guessFormSubmitted();
+        }
+    });
     gameFormSubmitted();
 };
 
@@ -92,6 +97,7 @@ function guessFormSubmitted() {
         makeGuess(gameKey, userGuess).then(data => {
             if (data['validguess']) {
                 document.getElementById("warning").innerHTML = "";
+                document.getElementById("userguess").value = "";
                 for (let i=0; i < data['comparison'].length; i++) {
                     document.getElementById("cell"+guessNum+i).innerHTML = userGuess.charAt(i);
                     if (data['comparison'][i] == 1) {
