@@ -42,6 +42,7 @@ func handleRequests() {
 	http.HandleFunc("/", home)
 	http.HandleFunc("/new", newPuzzle)
 	http.HandleFunc("/guess", guessHandle)
+	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 	log.Fatal(http.ListenAndServe(":10000", nil))
 }
 
