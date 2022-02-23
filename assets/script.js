@@ -4,7 +4,9 @@ var guessNum = 0;
 var victory = false;
 var currentMaxGuesses = 6;
 window.onload = function() {
-    document.getElementById("formSubmit").addEventListener("click", gameFormSubmitted);
+    document.getElementById("warning").style.display = "none";
+    document.getElementById("formSubmit1").addEventListener("click", gameFormSubmitted);
+    document.getElementById("formSubmit2").addEventListener("click", gameFormSubmitted);
     document.getElementById("guessSubmit").addEventListener("click", guessFormSubmitted);
     document.getElementById("userguess").addEventListener("keyup", function() {
         if (event.keyCode == 13) {
@@ -28,6 +30,7 @@ function gameFormSubmitted() {
         zeroremovalrate
     ).then(data => {
         document.getElementById("warning").innerHTML = "";
+        document.getElementById("warning").style.display = "none";
         var newTable = "";
         for (let i = 0; i < currentMaxGuesses; i++) {
             newTable += "<tr>";
@@ -49,30 +52,35 @@ function guessFormSubmitted() {
         makeGuess(gameKey, userGuess).then(data => {
             if (data['validguess']) {
                 document.getElementById("warning").innerHTML = "";
+                document.getElementById("warning").style.display = "none";
                 document.getElementById("userguess").value = "";
                 for (let i=0; i < data['comparison'].length; i++) {
                     document.getElementById("cell"+guessNum+i).innerHTML = userGuess.charAt(i);
                     if (data['comparison'][i] == 1) {
-                        document.getElementById("cell"+guessNum+i).style.backgroundColor = "green";
+                        document.getElementById("cell"+guessNum+i).style.backgroundColor = "#98D4BB";
                     } else if (data['comparison'][i] == -1) {
-                        document.getElementById("cell"+guessNum+i).style.backgroundColor = "yellow";
+                        document.getElementById("cell"+guessNum+i).style.backgroundColor = "#F7F6CF";
                     } else {
-                        document.getElementById("cell"+guessNum+i).style.backgroundColor = "red";
+                        document.getElementById("cell"+guessNum+i).style.backgroundColor = "#C47482";
                     }
                 }
                 guessNum++;
                 if (data['won']) {
                     if (guessNum == 1) {
                         document.getElementById("warning").innerHTML = "You won in one guess!";
+                        document.getElementById("warning").style.display = "block";
                     } else {
                         document.getElementById("warning").innerHTML = "You won in " + guessNum + " guesses!";
+                        document.getElementById("warning").style.display = "block";
                     }
                     victory = true;
                 } else if (data['lost'] || guessNum >= currentMaxGuesses) {
                     document.getElementById("warning").innerHTML = "You lose! The solution was " + data['solution'] + ".";
+                    document.getElementById("warning").style.display = "block";
                 }
             } else {
                 document.getElementById("warning").innerHTML = "Your guess is invalid!";
+                document.getElementById("warning").style.display = "block";
             }
         })
     }

@@ -1,27 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Nerdle</title>
-        <link rel="stylesheet" href="assets/styles.css" type="text/css" media="screen" charset="utf-8">
-    </head>
-    <body>
-        <h1>Nerdle</h1>
-        <p>This is my attempt at recreating the Nerdle game as seen on <a href="https://nerdlegame.com/">nerdlegame.com/</a>. My source code is available on <a href="https://github.com/ejyager00/nerdle">Github</a></p>
-        <div id="inputs">
-            <label for="puzzlelength">Puzzle length (characters):</label>
-            <input type="number" id="puzzlelength" name="puzzlelength" min="6" max="16" value="8" step="1"><br>
-            <label for="maxguesses">Maximum allowed guesses:</label>
-            <input type="number" id="maxguesses" name="maxguesses" min="1" max="100" value="6" step="1"><br>
-            <label for="leadingzeros">Leading zeros allowed for integers? (e.g. 07, -02):</label>
-            <input type="checkbox" id="leadingzeros" name="leadingzeros"><br>
-            <label for="negativezero">Negative zero allowed? (i.e. -0):</label>
-            <input type="checkbox" id="negativezero" name="negativezero"><br>
-            <label for="zeroremovalrate">Rate at which to remove multiplication by zero (can make things less interesting):</label>
-            <input type="number" id="zeroremovalrate" name="zeroremovalrate" min="0" max="1" value="0.75" step="0.001"><br>
-            <button type="button" id="formSubmit">Create New Game!</button>
-        </div>
-        <table>
-            <tbody id="gameGrid"><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody>
+
+<head>
+    <title>Nerdle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/styles.css" type="text/css" media="screen" charset="utf-8">
+</head>
+
+<body>
+    <article>
+        <h1>NERDLE</h1>
+        <p id="intro">This is a recreation of the Nerdle game as seen on <a
+                href="https://nerdlegame.com/">nerdlegame.com</a>. My source code is available on <a
+                href="https://github.com/ejyager00/nerdle">Github</a>.</p>
+        <h2>Ready to play?</h2>
+        <button type="button" id="formSubmit1">Create New Game!</button>
+        <br>
+        <table id="gameTable">
+            <tbody id="gameGrid">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
         </table>
         <div id="guessInputs">
             <label for="userguess">Guess the equation:</label>
@@ -29,6 +88,46 @@
             <button type="button" id="guessSubmit">Submit Guess!</button>
         </div>
         <p id="warning"></p>
+        <h2>Rules</h2>
+        <ul id="rules">
+            <li>The solution will always be a valid equation.</li>
+            <li>The right side of the equation will not have any binary operations, and the left side must have at least
+                one.</li>
+            <li>After a guess, characters in green are in the correct spot for the solution, characters in yellow are in
+                the solution in a different spot, and characters in red are not in the solution.</li>
+        </ul>
+        <div id="gameoptions">
+            <h2>Game Options</h2>
+            <table id="inputs">
+                <tr>
+                    <td class="inputlabel"><label for="puzzlelength">Puzzle length:</label></td>
+                    <td class="inputitem"><input type="number" id="puzzlelength" name="puzzlelength" min="6" max="16"
+                            value="8" step="1"></td>
+                </tr>
+                <tr>
+                    <td class="inputlabel"><label for="maxguesses">Maximum allowed guesses:</label></td>
+                    <td class="inputitem"><input type="number" id="maxguesses" name="maxguesses" min="1" max="100"
+                            value="6" step="1"></td>
+                </tr>
+                <tr title="e.g. 07, -02">
+                    <td class="inputlabel"><label for="leadingzeros">Leading zeros allowed:</label></td>
+                    <td class="inputitem"><input type="checkbox" id="leadingzeros" name="leadingzeros"></td>
+                </tr>
+                <tr title="i.e. -0">
+                    <td class="inputlabel"><label for="negativezero">Negative zero allowed:</label></td>
+                    <td class="inputitem"><input type="checkbox" id="negativezero" name="negativezero"></td>
+                </tr>
+                <tr title="e.g. 0*8934=0. It can get boring if these appear too often.">
+                    <td class="inputlabel"><label for="zeroremovalrate">Zero multiplication removal rate:</label></td>
+                    <td class="inputitem"><input type="number" id="zeroremovalrate" name="zeroremovalrate" min="0"
+                            max="1" value="0.75" step="0.001"></td>
+                </tr>
+            </table>
+            <br>
+            <button type="button" id="formSubmit2">Create New Game!</button>
+        </div>
         <script src="assets/script.js"></script>
-    </body>
+    </article>
+</body>
+
 </html>

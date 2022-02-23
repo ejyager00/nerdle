@@ -1,15 +1,108 @@
+/* 
+Green: 98D4BB
+Yellow: F7F6CF
+Red: C47482
+Light blue: 9AC8EB
+Dark blue: 5784BA
+Purple: BEB4C5
+White: F5F3E7
+*/
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-table, td {
-    border: 1px solid;
-}
-table {
-    margin-top: 30px;
-    margin-bottom: 20px;
-}
-td {
-    width: 40px;
-    height: 40px;
     text-align: center;
+    padding: 0px;
+    margin: 0px;
+    background-color: #F4F4F4;
+}
+article {
+    max-width: 900px;
+    padding: 0px 20px 80px 20px;
+    text-align: center;
+    display: inline-block;
+    background-color: #B6D8F2;
+    margin: 0px;
+    border-left: 1px solid;
+    border-right: 1px solid;
+}
+h1 {
+    font-family: 'Ubuntu Mono', Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 700;
+    font-size: 80px;
+    margin-bottom: 0px;
+    margin-top: 8px;
+}
+h2 {
+    font-family: 'Ubuntu Mono', Verdana, Geneva, Tahoma, sans-serif;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+input {
+    background-color: #F4F4F4;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+#intro {
+    max-width: 600px;
+    display: inline-block;
+}
+#inputs {
+    display: inline-block;
+}
+.inputlabel {
+    width: 60%;
+    text-align: right;
+}
+.inputitem {
+    width: 40%;
+    text-align: left;
+    vertical-align: bottom;
+}
+#zeroremovalrate, #maxguesses, #puzzlelength {
+    width: 55px;
+}
+#formSubmit1, #formSubmit2 {
+    background-color: #F5F3E7;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 6px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+}
+#gameTable {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    padding: 25px 10px 25px 10px;
+    border-radius: 30px;
+    border: 3px solid;
+    display: inline-block;
+    background-color: #F5F3E7;
+}
+#gameGrid > tr > td {
+    font-family: 'Ubuntu Mono', Verdana, Geneva, Tahoma, sans-serif;
+    width: 45px;
+    height: 45px;
+    text-align: center;
+    border: 2px solid;
+    border-radius: 6px;
+    font-size: 25px;
+}
+#guessInputs {
+    vertical-align: center;
+}
+#guessSubmit {
+    background-color: #F5F3E7;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 2px;
+    border-radius: 3px;
+}
+#rules {
+    list-style-type: none;
+    text-align: left;
+    max-width: 450px;
+    margin-top: 0px;
+    display: inline-block;
+    padding-left: 0px;
+    margin-bottom: 0px;
+}
+#rules > li {
+    margin-bottom: 8px;
 }
