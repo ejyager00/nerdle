@@ -36,6 +36,9 @@ h2 {
     margin-top: 10px;
     margin-bottom: 5px;
 }
+#encouragement {
+    margin: 0px;
+}
 input {
     background-color: #F4F4F4;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -67,6 +70,9 @@ input {
     font-size: 15px;
     font-weight: 500;
 }
+#formSubmit1 {
+    margin-top: 10px;
+}
 #gameTable {
     margin-top: 30px;
     margin-bottom: 15px;
@@ -87,6 +93,39 @@ input {
 }
 #guessInputs {
     vertical-align: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+#guessInputs > div {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#guessInputs > div > button {
+    margin: 2px;
+}
+#command_row > button {
+    background-color: #F5F3E7;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 6px 12px 6px 12px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    height: 40px;
+}
+.char_input {
+    background-color: #F5F3E7;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 6px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    max-width: 40px;
+    width: 100%;
+    display: inline-block;
+    height: 40px;
 }
 #guessSubmit {
     background-color: #F5F3E7;

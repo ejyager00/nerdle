@@ -129,7 +129,7 @@ func MakeGuess(guess, puzzle string, leadingzeros, negativezeros bool) []int {
 			answer[i] = 1 // if the guess character equals the true value
 		} else if strings.ContainsRune(puzzle, c) {
 			puzzle_c := strings.Count(puzzle, string(c))
-			if puzzle_c > strings.Count(guess, string(c)) { // there are more of this character in the puzzle than the guess
+			if puzzle_c >= strings.Count(guess, string(c)) { // there are more of this character in the puzzle than the guess
 				answer[i] = -1 // the character is in the puzzle, but not position i
 			} else if puzzle_c > strings.Count(guess[:i], string(c)) { // there are more of this character in the puzzle than the guess up to this character
 				count_correct := 0

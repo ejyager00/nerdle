@@ -12,12 +12,8 @@
 <body>
     <article>
         <h1>NERDLE</h1>
-        <p id="intro">This is a recreation of the Nerdle game as seen on <a
-                href="https://nerdlegame.com/">nerdlegame.com</a>. My source code is available on <a
-                href="https://github.com/ejyager00/nerdle">Github</a>.</p>
-        <h2>Ready to play?</h2>
-        <button type="button" id="formSubmit1">Create New Game!</button>
-        <br>
+        <!--<h2>Ready to play?</h2>
+        <p id="encouragement">Submit a guess!</p>-->
         <table id="gameTable">
             <tbody id="gameGrid">
                 <tr>
@@ -83,11 +79,35 @@
             </tbody>
         </table>
         <div id="guessInputs">
-            <label for="userguess">Guess the equation:</label>
-            <input id="userguess" name="userguess">
-            <button type="button" id="guessSubmit">Submit Guess!</button>
+            <div id="number_row">
+                <button type="button" id="0" class="char_input">0</button>
+                <button type="button" id="1" class="char_input">1</button>
+                <button type="button" id="2" class="char_input">2</button>
+                <button type="button" id="3" class="char_input">3</button>
+                <button type="button" id="4" class="char_input">4</button>
+                <button type="button" id="5" class="char_input">5</button>
+                <button type="button" id="6" class="char_input">6</button>
+                <button type="button" id="7" class="char_input">7</button>
+                <button type="button" id="8" class="char_input">8</button>
+                <button type="button" id="9" class="char_input">9</button>
+            </div>
+            <div id="operator_row">
+                <button type="button" id="+" class="char_input">+</button>
+                <button type="button" id="-" class="char_input">-</button>
+                <button type="button" id="*" class="char_input">&#215;</button>
+                <button type="button" id="/" class="char_input">&#247;</button>
+                <button type="button" id="=" class="char_input">=</button>
+            </div>
+            <div id="command_row">
+                <button type="button" id="backspace">Delete</button>
+                <button type="button" id="guessSubmit">Submit</button>
+            </div>
         </div>
         <p id="warning"></p>
+        <button type="button" id="formSubmit1">Create New Game!</button>
+        <p id="intro">This is a recreation of the Nerdle game as seen on <a
+                href="https://nerdlegame.com/">nerdlegame.com</a>. My source code is available on <a
+                href="https://github.com/ejyager00/nerdle">Github</a>.</p>
         <h2>Rules</h2>
         <ul id="rules">
             <li>The solution will always be a valid equation.</li>
