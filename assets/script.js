@@ -88,6 +88,12 @@ function gameFormSubmitted() {
         gameKey = data['key'];
         guessNum = 0;
         victory = false;
+        userGuess = "";
+        input_position = 0;
+        char_colors = {};
+        for (let i in buttons) {
+            char_colors[buttons.charAt(i)] = 0;
+        }
     });
 }
 
