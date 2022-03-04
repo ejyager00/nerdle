@@ -71,7 +71,8 @@ input {
     font-weight: 500;
 }
 #formSubmit1 {
-    margin-top: 10px;
+    display: block;
+    margin: 10px auto auto auto;
 }
 #gameTable {
     margin-top: 30px;

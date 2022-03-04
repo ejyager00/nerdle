@@ -22,7 +22,7 @@ function setup() {
     sizeChanged();
     // Hiding elements
     document.getElementById("warning").style.display = "none";
-    document.getElementById("formSubmit1").style.display = "none";
+    //document.getElementById("formSubmit1").style.display = "none";
     // initializing game
     gameFormSubmitted();
     // adding button event listeners
@@ -39,7 +39,6 @@ function setup() {
     }
     // adding ket event listeners
     document.onkeyup = function(e) {
-        console.log(e);
         var selectedInput = document.activeElement.id;
         if (selectedInput == "puzzlelength" || selectedInput == "maxguesses" || selectedInput=="zeroremovalrate") {
             if (e.key=="Enter") {
