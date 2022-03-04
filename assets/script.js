@@ -129,11 +129,11 @@ function guessFormSubmitted() {
                     document.getElementById("warning").style.display = "block";
                     document.getElementById("warning").innerHTML = winmessage;
                     victory = true;
-                    document.getElementById("formSubmit1").style.display = "inline-block";
+                    document.getElementById("formSubmit1").style.display = "block";
                 } else if (data['lost'] || guessNum >= currentMaxGuesses) {
                     document.getElementById("warning").innerHTML = "You lose! The solution was " + data['solution'] + ".";
                     document.getElementById("warning").style.display = "block";
-                    document.getElementById("formSubmit1").style.display = "inline-block";
+                    document.getElementById("formSubmit1").style.display = "block";
                 }
             } else {
                 document.getElementById("warning").innerHTML = "Your guess is invalid!";
