@@ -22,7 +22,7 @@ function setup() {
     sizeChanged();
     // Hiding elements
     document.getElementById("warning").style.display = "none";
-    //document.getElementById("formSubmit1").style.display = "none";
+    document.getElementById("formSubmit1").style.display = "none";
     // initializing game
     gameFormSubmitted();
     // adding button event listeners
