@@ -58,6 +58,7 @@ function setup() {
 }
 
 function gameFormSubmitted() {
+    console.log("gameFormSubmitted");
     currentMaxGuesses = document.getElementById("maxguesses").value;
     puzzlelength = document.getElementById("puzzlelength").value;
     let leadingzeros = document.getElementById("leadingzeros").checked;
