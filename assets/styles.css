@@ -1,6 +1,6 @@
 /* 
 Green: 98D4BB
-Yellow: F7F6CF
+Yellow: F9F786
 Red: C47482
 Light blue: 9AC8EB
 Dark blue: 5784BA
@@ -13,6 +13,9 @@ body {
     padding: 0px;
     margin: 0px;
     background-color: #F4F4F4;
+}
+article.no_click {
+    cursor: wait;
 }
 article {
     max-width: 900px;
@@ -103,6 +106,9 @@ input {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+}
+button {
+    cursor: pointer;
 }
 #guessInputs > div > button {
     margin: 2px;

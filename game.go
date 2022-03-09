@@ -78,7 +78,8 @@ func IsValidPuzzle(puzzle string, leadingzeros, negativezeros bool) bool {
 	if has_operator {
 		return false // there must not be an operator on the right side
 	}
-	if !IsEqual(puzzle) {
+	result, err := IsEqual(puzzle)
+	if !result || err != nil {
 		return false // the equation must be true
 	}
 	return true
@@ -119,10 +120,7 @@ func WeightedRandomPuzzle(length int, leadingzeros, negativezeros bool, zeroremo
 	return puzzle
 }
 
-func MakeGuess(guess, puzzle string, leadingzeros, negativezeros bool) []int {
-	// if !IsValidPuzzle(guess, leadingzeros, negativezeros) || len(guess) != len(puzzle) {
-	// 	return nil
-	// }
+func MakeGuess(guess, puzzle string) []int {
 	answer := make([]int, len(guess))
 	for i, c := range guess {
 		if c == rune(puzzle[i]) {
@@ -130,6 +128,8 @@ func MakeGuess(guess, puzzle string, leadingzeros, negativezeros bool) []int {
 		} else if strings.ContainsRune(puzzle, c) {
 			puzzle_c := strings.Count(puzzle, string(c))
 			if puzzle_c >= strings.Count(guess, string(c)) { // there are more of this character in the puzzle than the guess
+				answer[i] = -1 // the character is in the puzzle, but not position i
+			} else if strings.Count(guess[:i], string(c)) < strings.Count(puzzle[:i], string(c)) { // there are more of this in the preceding puzzle than in the preceding guess
 				answer[i] = -1 // the character is in the puzzle, but not position i
 			} else if puzzle_c > strings.Count(guess[:i], string(c)) { // there are more of this character in the puzzle than the guess up to this character
 				count_correct := 0

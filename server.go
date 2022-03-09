@@ -77,11 +77,12 @@ func guessHandle(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, err.Error())
 	}
 	game := games[req.Key]
-	if !IsValidPuzzle(req.Guess, game.leadingzeros, game.negativezeros) || len(req.Guess) != game.length {
+	equality, err := IsEqual(req.Guess)
+	if !equality || err != nil || len(req.Guess) != game.length {
 		fmt.Fprintf(w, "{\"validguess\":false}")
 	} else {
 		game.guesses++
-		comparison := MakeGuess(req.Guess, game.puzzle, game.leadingzeros, game.negativezeros)
+		comparison := MakeGuess(req.Guess, game.puzzle)
 		won := true
 		for _, c := range comparison {
 			if c != 1 {

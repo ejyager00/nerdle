@@ -1,3 +1,10 @@
+const my_yellow = "#F9F786";
+const my_red = "#C47482";
+const my_green = "#98D4BB";
+const my_white = "#F5F3E7";
+const red_square = "&#128997;";
+const yellow_square = "&#129000;";
+const green_square = "&#129001;";
 var url = window.location.href;
 var gameKey = -1;
 var guessNum = 0;
@@ -7,24 +14,20 @@ var puzzlelength = 8;
 var userGuess = "";
 var buttons = '0123456789+-*/=';
 var input_position = 0;
+var results_array = [];
 var char_colors = {};
 for (let i in buttons) {
     char_colors[buttons.charAt(i)] = 0;
 }
 
-window.onload = function () {
-    setup();
-};
+window.onload = setup;
 
 function setup() {
     // window sizing
     window.addEventListener('resize', sizeChanged);
-    sizeChanged();
     // Hiding elements
     document.getElementById("warning").style.display = "none";
     document.getElementById("formSubmit1").style.display = "none";
-    // initializing game
-    gameFormSubmitted();
     // adding button event listeners
     document.getElementById("formSubmit1").addEventListener("click", gameFormSubmitted);
     document.getElementById("formSubmit2").addEventListener("click", gameFormSubmitted);
@@ -37,7 +40,7 @@ function setup() {
             });
         })(i);
     }
-    // adding ket event listeners
+    // adding key event listeners
     document.onkeyup = function(e) {
         var selectedInput = document.activeElement.id;
         if (selectedInput == "puzzlelength" || selectedInput == "maxguesses" || selectedInput=="zeroremovalrate") {
@@ -55,17 +58,27 @@ function setup() {
         }
     }
     document.addEventListener('paste', handlePaste);
+    // initializing game
+    gameFormSubmitted();
 }
 
 function gameFormSubmitted() {
-    console.log("gameFormSubmitted");
+    document.getElementsByTagName("article")[0].classList.add("no_click");
+    for (let i = 0; i< document.getElementsByTagName("button").length; i++) {
+        document.getElementsByTagName("button")[i].style.cursor = "wait";
+        document.getElementsByTagName("button")[i].disabled = true;
+    }
+    for (let i = 0; i< document.getElementsByTagName("input").length; i++) {
+        document.getElementsByTagName("input")[i].style.cursor = "wait";
+        document.getElementsByTagName("input")[i].disabled = true;
+    }
     currentMaxGuesses = document.getElementById("maxguesses").value;
     puzzlelength = document.getElementById("puzzlelength").value;
     let leadingzeros = document.getElementById("leadingzeros").checked;
     let negativezero = document.getElementById("negativezero").checked;
     let zeroremovalrate = document.getElementById("zeroremovalrate").value;
     for (let i in buttons) {
-        document.getElementById(buttons.charAt(i)).style.backgroundColor = "#F5F3E7";
+        document.getElementById(buttons.charAt(i)).style.backgroundColor = my_white;
         char_colors[buttons.charAt(i)] = 0;
     }
     newGame(
@@ -91,54 +104,67 @@ function gameFormSubmitted() {
         victory = false;
         userGuess = "";
         input_position = 0;
+        results_array = [];
         char_colors = {};
         for (let i in buttons) {
             char_colors[buttons.charAt(i)] = 0;
         }
+        document.getElementsByTagName("article")[0].classList.remove("no_click");
+        for (let i = 0; i< document.getElementsByTagName("button").length; i++) {
+            document.getElementsByTagName("button")[i].style.cursor = "pointer";
+            document.getElementsByTagName("button")[i].disabled = false;
+        }
+        for (let i = 0; i< document.getElementsByTagName("input").length; i++) {
+            document.getElementsByTagName("input")[i].style.cursor = "";
+            document.getElementsByTagName("input")[i].disabled = false;
+        }
     });
+    document.activeElement.blur();
 }
 
 function guessFormSubmitted() {
     if (guessNum < currentMaxGuesses && !victory) {
         makeGuess(gameKey, userGuess).then(data => {
+            console.log(data['comparison']);
             if (data['validguess']) {
                 document.getElementById("warning").innerHTML = "";
                 document.getElementById("warning").style.display = "none";
                 for (let i = 0; i < data['comparison'].length; i++) {
                     if (data['comparison'][i] == 1) {
-                        document.getElementById("cell" + guessNum + i).style.backgroundColor = "#98D4BB";
-                        document.getElementById(userGuess.charAt(i)).style.backgroundColor = "#98D4BB";
+                        document.getElementById("cell" + guessNum + i).style.backgroundColor = my_green;
+                        document.getElementById(userGuess.charAt(i)).style.backgroundColor = my_green;
                         char_colors[userGuess.charAt(i)] = 3;
                     } else if (data['comparison'][i] == -1) {
-                        document.getElementById("cell" + guessNum + i).style.backgroundColor = "#F7F6CF";
+                        document.getElementById("cell" + guessNum + i).style.backgroundColor = my_yellow;
                         if (char_colors[userGuess.charAt(i)]<2) {
-                            document.getElementById(userGuess.charAt(i)).style.backgroundColor = "#F7F6CF";
+                            document.getElementById(userGuess.charAt(i)).style.backgroundColor = my_yellow;
                             char_colors[userGuess.charAt(i)] = 2;
                         }
                     } else {
-                        document.getElementById("cell" + guessNum + i).style.backgroundColor = "#C47482";
+                        document.getElementById("cell" + guessNum + i).style.backgroundColor = my_red;
                         if (char_colors[userGuess.charAt(i)]<1) {
-                            document.getElementById(userGuess.charAt(i)).style.backgroundColor = "#C47482";
+                            document.getElementById(userGuess.charAt(i)).style.backgroundColor = my_red;
                             char_colors[userGuess.charAt(i)] = 1;
                         }
                     }
                 }
+                results_array.push(data['comparison']);
                 guessNum++;
                 userGuess = "";
                 input_position = 0;
                 if (data['won']) {
                     var winmessage = "";
                     if (guessNum == 1) {
-                        winmessage += "You won in one guess!";
+                        winmessage += "You won in one guess! Copy and paste to share your results:<br>" + createSharingString(results_array);
                     } else {
-                        winmessage += "You won in " + guessNum + " guesses!";
+                        winmessage += "You won in " + guessNum + " guesses! Copy and paste to share your results:<br>" + createSharingString(results_array);
                     }
                     document.getElementById("warning").style.display = "block";
                     document.getElementById("warning").innerHTML = winmessage;
                     victory = true;
                     document.getElementById("formSubmit1").style.display = "block";
                 } else if (data['lost'] || guessNum >= currentMaxGuesses) {
-                    document.getElementById("warning").innerHTML = "You lose! The solution was " + data['solution'] + ".";
+                    document.getElementById("warning").innerHTML = "You lose! The solution was " + data['solution'] + ". Copy and paste to share your results:<br>" + createSharingString(results_array);
                     document.getElementById("warning").style.display = "block";
                     document.getElementById("formSubmit1").style.display = "block";
                 }
@@ -189,6 +215,23 @@ function backspace() {
     }
 }
 
+function createSharingString(results) {
+    output = ""
+    for (let i in results) {
+        for (let j in results[i]) {
+            if (results[i][j]==1) {
+                output += green_square;
+            } else if (results[i][j]==0) {
+                output += red_square;
+            } else {
+                output += yellow_square;
+            }
+        }
+        output += "<br>";
+    }
+    return output;
+}
+
 function sizeChanged() {
     return;
 }
@@ -200,7 +243,7 @@ async function newGame(puzzlelength, maxguesses, leadingzeros, negativezero, zer
         ',"ZeroRemovalRate":' + zeroremovalrate +
         ',"MaxGuesses":' + maxguesses + '}';
     const response = await fetch(url + "new", {
-        method: "POSsT",
+        method: "POST",
         mode: "cors",
         headers: {
             'Content-Type': 'application/json'
